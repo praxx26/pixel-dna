@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI or Not</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <!-- Main Layout -->
+    <div class="app-layout">
+        <!-- Main Content Area -->
+
+        <!-- Main Content Area -->
+        <main class="content-main">
+            <!-- Upload Area -->
+            <div class="upload-container" id="upload-container">
+                <input type="file" id="file-input" accept="image/*" hidden>
+                
+                <div class="upload-info">
+                    <p class="file-req">File required</p>
+                    <p class="file-supp">Supports: Image > Video > Audio</p>
+                    <p class="file-form">Formats: MP3 / MP4 / PNG / JPG / WEBP / GIF</p>
+                </div>
+
+                <div class="target-area" id="target-area">
+                    <div class="target-crosshair">
+                        <!-- We will CSS style this to look like the target radar -->
+                        <div class="radar-circle circle-1"></div>
+                        <div class="radar-circle circle-2"></div>
+                        <div class="radar-circle circle-3"></div>
+                        <div class="radar-line-h"></div>
+                        <div class="radar-line-v"></div>
+                        <div class="target-text">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="upload-icon"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                            <br>
+                            Drag file here<br>
+                            <span class="or">or</span><br>
+                            <span class="upload-link">Upload File</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Interactive Node Graph Area (Hidden initially) -->
+                <div class="node-graph-container hidden" id="node-graph-container">
+                    <div class="bg-blur">
+                        <img id="bg-preview-img" src="" alt="blur background">
+                    </div>
+                    
+                    <div class="uploaded-image-thumbnail">
+                        <img id="thumbnail-preview" src="" alt="thumbnail">
+                    </div>
+                    
+                    <button id="upload-another-btn" class="btn upload-another-btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                        Upload Another
+                    </button>
+
+                    <!-- SVG Connections -->
+                    <svg class="node-connections" viewBox="0 0 1000 600" preserveAspectRatio="none">
+                        <defs>
+                            <linearGradient id="line-glow-ai" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="var(--accent-red)" stop-opacity="0.2"/>
+                                <stop offset="100%" stop-color="var(--accent-red)" stop-opacity="1"/>
+                            </linearGradient>
+                            <linearGradient id="line-glow-real" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="var(--accent-green)" stop-opacity="0.2"/>
+                                <stop offset="100%" stop-color="var(--accent-green)" stop-opacity="1"/>
+                            </linearGradient>
+                        </defs>
+                        <!-- Paths from left nodes to center orb -->
+                        <path id="path-cnn" d="M 250 150 C 400 150, 450 300, 500 300" class="data-line"></path>
+                        <path id="path-meta" d="M 250 300 L 500 300" class="data-line"></path>
+                        <path id="path-ocr" d="M 250 450 C 400 450, 450 300, 500 300" class="data-line"></path>
+                        <!-- Path from center to output -->
+                        <path id="path-out" d="M 500 300 L 750 300" class="data-line"></path>
+                    </svg>
+
+                    <!-- The Nodes HTML Overlay -->
+                    <div class="nodes-overlay">
+                        <!-- Left Nodes: Input Analyzers -->
+                        <div class="input-nodes-col">
+                            <div class="node-box" id="node-cnn">
+                                <h4>CNN Predictor</h4>
+                                <div class="node-status" id="status-cnn">Scanning...</div>
+                            </div>
+                            <div class="node-box" id="node-meta">
+                                <h4>Metadata Check</h4>
+                                <div class="node-status" id="status-meta">Scanning...</div>
+                            </div>
+                            <div class="node-box" id="node-ocr">
+                                <h4>OCR Signature</h4>
+                                <div class="node-status" id="status-ocr">Scanning...</div>
+                            </div>
+                        </div>
+
+                        <!-- Center Node: The Analyzer Core -->
+                        <div class="center-core-col">
+                            <div class="orb-container" id="analyzer-orb">
+                                <div class="orb-ring orb-ring-1"></div>
+                                <div class="orb-ring orb-ring-2"></div>
+                                <div class="orb-ring orb-ring-3"></div>
+                                <div class="orb-core"></div>
+                                <div class="orb-label" id="orb-label">ANALYZING</div>
+                            </div>
+                        </div>
+
+                        <!-- Right Node: Final Output -->
+                        <div class="output-nodes-col">
+                            <div class="node-box output-box hidden" id="node-output">
+                                <h3 id="output-title">LIKELY AI</h3>
+                                <div class="output-score" id="output-score">100%</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bottom-bar">
+                        <span class="date" id="current-date">JUN 23, 2026</span>
+                        <span class="domain">aiornot.com</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Image Lightbox Modal -->
+            <div class="image-modal hidden" id="image-modal">
+                <div class="modal-backdrop" id="modal-backdrop"></div>
+                <div class="modal-content">
+                    <img id="modal-img" src="" alt="Enlarged image">
+                    <div class="modal-stamp" id="modal-stamp"></div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="/static/js/main.js"></script>
+</body>
+</html>
