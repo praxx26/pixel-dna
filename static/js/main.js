@@ -50,10 +50,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Modal Events
-    if (thumbnailPreview) {
-        thumbnailPreview.parentElement.addEventListener('click', () => {
-            imageModal.classList.remove('hidden');
+    // Interactive Flip Card Event
+    if (thumbnailContainer) {
+        thumbnailContainer.addEventListener('click', () => {
+            thumbnailContainer.classList.toggle('flipped');
         });
     }
 
