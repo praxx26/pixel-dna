@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalImg = document.getElementById('modal-img');
     const modalStamp = document.getElementById('modal-stamp');
     const thumbnailStamp = document.getElementById('thumbnail-stamp');
+    const scannerOverlay = document.getElementById('scanner-overlay');
     
     // Set current date
     const date = new Date();
@@ -118,12 +119,9 @@ document.addEventListener('DOMContentLoaded', () => {
             thumbnailPreview.src = e.target.result;
             modalImg.src = e.target.result;
             modalStamp.innerText = "ANALYZING...";
-            modalStamp.className = "modal-stamp analyzing-stamp"; 
-            if (thumbnailStamp) {
-                thumbnailStamp.innerText = "ANALYZING...";
-                thumbnailStamp.className = "thumbnail-stamp analyzing-stamp";
-                thumbnailStamp.classList.remove('hidden');
-            }
+            modalStamp.className = "modal-stamp"; 
+            if (thumbnailStamp) thumbnailStamp.classList.add('hidden');
+            if (scannerOverlay) scannerOverlay.classList.remove('hidden');
         };
         reader.readAsDataURL(file);
 
@@ -191,6 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Update Output Node
         nodeOutput.classList.remove('hidden');
         if (thumbnailStamp) thumbnailStamp.classList.remove('hidden');
+        if (scannerOverlay) scannerOverlay.classList.add('hidden');
 
         if (isAi) {
             nodeOutput.classList.add('ai-result');
