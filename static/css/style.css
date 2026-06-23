@@ -231,15 +231,15 @@ body {
     z-index: 10;
     cursor: pointer;
     perspective: 1000px;
+    transition: transform 0.2s;
+}
+
+.uploaded-image-thumbnail:hover {
+    transform: scale(1.05);
 }
 
 .uploaded-image-thumbnail:hover .thumbnail-inner {
     box-shadow: 0 8px 25px rgba(0,0,0,0.9), 0 0 15px rgba(255,255,255,0.2);
-    transform: scale(1.05);
-}
-
-.uploaded-image-thumbnail.flipped:hover .thumbnail-inner {
-    transform: scale(1.05) rotateY(180deg);
 }
 
 .thumbnail-inner {
@@ -253,9 +253,7 @@ body {
     box-shadow: 0 5px 20px rgba(0,0,0,0.8);
 }
 
-.uploaded-image-thumbnail.flipped .thumbnail-inner {
-    transform: rotateY(180deg);
-}
+
 
 .thumbnail-front, .thumbnail-back {
     position: absolute;

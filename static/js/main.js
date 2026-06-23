@@ -41,6 +41,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const date = new Date();
     currentDateStr.innerText = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase();
 
+    // 3D Flip State
+    let flipRotation = 0;
+
     // Allow re-uploading by clicking the explicit button
     const uploadAnotherBtn = document.getElementById('upload-another-btn');
     if (uploadAnotherBtn) {
@@ -53,7 +56,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Interactive Flip Card Event
     if (thumbnailContainer) {
         thumbnailContainer.addEventListener('click', () => {
-            thumbnailContainer.classList.toggle('flipped');
+            flipRotation += 180;
+            const inner = thumbnailContainer.querySelector('.thumbnail-inner');
+            if (inner) inner.style.transform = `rotateY(${flipRotation}deg)`;
         });
     }
 
@@ -127,7 +132,11 @@ document.addEventListener('DOMContentLoaded', () => {
             // Clear stamp during analysis
             modalStamp.innerHTML = "";
             modalStamp.className = "modal-stamp hidden"; 
-            if (thumbnailContainer) thumbnailContainer.classList.remove('flipped');
+            if (thumbnailContainer) {
+                flipRotation = 0;
+                const inner = thumbnailContainer.querySelector('.thumbnail-inner');
+                if (inner) inner.style.transform = `rotateY(0deg)`;
+            }
             if (scannerOverlay) scannerOverlay.classList.remove('hidden');
         };
         reader.readAsDataURL(file);
@@ -218,8 +227,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         
-        // Trigger 3D Flip Card!
-        if (thumbnailContainer) thumbnailContainer.classList.add('flipped');
+        // Trigger 3D Flip Card! (Spin continuously to the back)
+        if (thumbnailContainer) {
+            // Only flip if it is currently facing front (even multiple of 180)
+            if (flipRotation % 360 === 0) {
+                flipRotation += 180;
+            }
+            const inner = thumbnailContainer.querySelector('.thumbnail-inner');
+            if (inner) inner.style.transform = `rotateY(${flipRotation}deg)`;
+        }
         
         outputScore.innerText = conf.toFixed(0) + '%';
     }
