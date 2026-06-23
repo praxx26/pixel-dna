@@ -237,6 +237,31 @@ body {
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
+.thumbnail-stamp {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-15deg);
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: var(--accent-red);
+    text-shadow: 0 2px 5px rgba(0,0,0,0.8);
+    border: 3px solid var(--accent-red);
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(2px);
+    pointer-events: none;
+    text-align: center;
+    white-space: nowrap;
+    z-index: 15;
+}
+
+.thumbnail-stamp.real-result {
+    color: var(--accent-green);
+    border-color: var(--accent-green);
+}
+
 .uploaded-image-thumbnail:hover {
     transform: scale(1.05);
     box-shadow: 0 8px 25px rgba(0,0,0,0.9), 0 0 15px rgba(255,255,255,0.2);
