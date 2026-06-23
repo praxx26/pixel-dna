@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const thumbnailContainer = document.getElementById('thumbnail-container');
     const thumbnailBack = document.getElementById('thumbnail-back');
     const thumbnailBackText = document.getElementById('thumbnail-back-text');
+    const viewImageBtn = document.getElementById('view-image-btn');
     
     // SVG Icons for Stamps
     const iconAI = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>`;
@@ -59,6 +60,13 @@ document.addEventListener('DOMContentLoaded', () => {
             flipRotation += 180;
             const inner = thumbnailContainer.querySelector('.thumbnail-inner');
             if (inner) inner.style.transform = `rotateY(${flipRotation}deg)`;
+        });
+    }
+
+    // Modal Events
+    if (viewImageBtn) {
+        viewImageBtn.addEventListener('click', () => {
+            imageModal.classList.remove('hidden');
         });
     }
 
@@ -129,13 +137,23 @@ document.addEventListener('DOMContentLoaded', () => {
             bgPreviewImg.src = e.target.result;
             thumbnailPreview.src = e.target.result;
             modalImg.src = e.target.result;
-            // Clear stamp during analysis
+            // Clear stamp completely from modal
             modalStamp.innerHTML = "";
-            modalStamp.className = "modal-stamp hidden"; 
+            modalStamp.classList.add('hidden'); 
+            if (viewImageBtn) viewImageBtn.classList.remove('hidden');
+
             if (thumbnailContainer) {
-                flipRotation = 0;
                 const inner = thumbnailContainer.querySelector('.thumbnail-inner');
-                if (inner) inner.style.transform = `rotateY(0deg)`;
+                if (inner) {
+                    // Disable transition to snap back to 0 without "rewind" spinning glitch
+                    inner.style.transition = 'none';
+                    flipRotation = 0;
+                    inner.style.transform = `rotateY(0deg)`;
+                    // Force browser layout reflow to apply the snap instantly
+                    void inner.offsetWidth;
+                    // Re-enable CSS transitions
+                    inner.style.transition = '';
+                }
             }
             if (scannerOverlay) scannerOverlay.classList.remove('hidden');
         };
@@ -205,13 +223,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Update Output Node
         nodeOutput.classList.remove('hidden');
         if (scannerOverlay) scannerOverlay.classList.add('hidden');
-        modalStamp.classList.remove('hidden');
+        // Do not unhide modalStamp. The modal is just for viewing the pure image now.
 
         if (isAi) {
             nodeOutput.classList.add('ai-result');
             outputTitle.innerText = "LIKELY AI";
-            modalStamp.innerHTML = iconAI;
-            modalStamp.className = "modal-stamp";
             if (thumbnailBack) {
                 thumbnailBackText.innerText = "LIKELY\nAI";
                 thumbnailBack.className = "thumbnail-back";
@@ -219,8 +235,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             nodeOutput.classList.add('real-result');
             outputTitle.innerText = "REAL IMAGE";
-            modalStamp.innerHTML = iconReal;
-            modalStamp.className = "modal-stamp real-result";
             if (thumbnailBack) {
                 thumbnailBackText.innerText = "REAL\nIMAGE";
                 thumbnailBack.className = "thumbnail-back real-result";
