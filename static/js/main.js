@@ -118,8 +118,12 @@ document.addEventListener('DOMContentLoaded', () => {
             thumbnailPreview.src = e.target.result;
             modalImg.src = e.target.result;
             modalStamp.innerText = "ANALYZING...";
-            modalStamp.className = "modal-stamp"; // default
-            if (thumbnailStamp) thumbnailStamp.classList.add('hidden');
+            modalStamp.className = "modal-stamp analyzing-stamp"; 
+            if (thumbnailStamp) {
+                thumbnailStamp.innerText = "ANALYZING...";
+                thumbnailStamp.className = "thumbnail-stamp analyzing-stamp";
+                thumbnailStamp.classList.remove('hidden');
+            }
         };
         reader.readAsDataURL(file);
 
