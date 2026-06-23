@@ -228,86 +228,77 @@ body {
     right: 2rem;
     width: 140px;
     height: 140px;
-    border-radius: 8px;
-    border: 2px solid rgba(255,255,255,0.2);
-    box-shadow: 0 5px 20px rgba(0,0,0,0.8);
-    overflow: hidden;
     z-index: 10;
     cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
+    perspective: 1000px;
 }
 
-.modal-stamp {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: rgba(0,0,0,0.6);
-    backdrop-filter: blur(8px);
-    border: 4px solid var(--accent-red);
-    color: var(--accent-red);
-    box-shadow: 0 0 30px var(--accent-red-glow);
-    z-index: 15;
-    pointer-events: none;
-    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+.uploaded-image-thumbnail:hover .thumbnail-inner {
+    box-shadow: 0 8px 25px rgba(0,0,0,0.9), 0 0 15px rgba(255,255,255,0.2);
+    transform: scale(1.05);
 }
 
-.thumbnail-stamp {
+.uploaded-image-thumbnail.flipped:hover .thumbnail-inner {
+    transform: scale(1.05) rotateY(180deg);
+}
+
+.thumbnail-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s;
+    transform-style: preserve-3d;
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.8);
+}
+
+.uploaded-image-thumbnail.flipped .thumbnail-inner {
+    transform: rotateY(180deg);
+}
+
+.thumbnail-front, .thumbnail-back {
     position: absolute;
-    bottom: -10px;
-    right: -10px;
-    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.thumbnail-front {
+    border: 2px solid rgba(255,255,255,0.2);
+}
+
+.thumbnail-front img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.thumbnail-back {
+    transform: rotateY(180deg);
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: rgba(20, 20, 30, 0.9);
-    backdrop-filter: blur(4px);
+    background: rgba(225, 29, 72, 0.95);
     border: 3px solid var(--accent-red);
-    color: var(--accent-red);
-    box-shadow: 0 0 20px var(--accent-red-glow);
-    z-index: 15;
-    pointer-events: none;
-    animation: popInCorner 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    color: white;
+    font-weight: 900;
+    font-size: 1.5rem;
+    text-align: center;
+    padding: 10px;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 0 20px var(--accent-red-glow);
+    text-shadow: 0 2px 5px rgba(0,0,0,0.8);
+    line-height: 1.2;
 }
 
-@keyframes popIn {
-    0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
-    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-}
-
-@keyframes popInCorner {
-    0% { transform: scale(0); opacity: 0; }
-    100% { transform: scale(1); opacity: 1; }
-}
-
-.modal-stamp {
-    width: 120px;
-    height: 120px;
-}
-.modal-stamp svg {
-    width: 60px;
-    height: 60px;
-}
-
-.thumbnail-stamp {
-    width: 44px;
-    height: 44px;
-    bottom: 8px;
-    right: 8px;
-}
-.thumbnail-stamp svg {
-    width: 24px;
-    height: 24px;
-}
-
-.thumbnail-stamp.real-result, .modal-stamp.real-result {
-    color: var(--accent-green);
+.thumbnail-back.real-result {
+    background: rgba(16, 185, 129, 0.95);
     border-color: var(--accent-green);
-    box-shadow: 0 0 30px rgba(16,185,129,0.5);
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 0 20px rgba(16, 185, 129, 0.4);
 }
 
 /* Scanner Animation */
@@ -340,10 +331,7 @@ body {
     100% { top: 120%; }
 }
 
-.uploaded-image-thumbnail:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.9), 0 0 15px rgba(255,255,255,0.2);
-}
+
 
 .uploaded-image-thumbnail img {
     width: 100%;

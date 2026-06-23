@@ -28,8 +28,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalBackdrop = document.getElementById('modal-backdrop');
     const modalImg = document.getElementById('modal-img');
     const modalStamp = document.getElementById('modal-stamp');
-    const thumbnailStamp = document.getElementById('thumbnail-stamp');
     const scannerOverlay = document.getElementById('scanner-overlay');
+    const thumbnailContainer = document.getElementById('thumbnail-container');
+    const thumbnailBack = document.getElementById('thumbnail-back');
+    const thumbnailBackText = document.getElementById('thumbnail-back-text');
     
     // SVG Icons for Stamps
     const iconAI = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>`;
@@ -125,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Clear stamp during analysis
             modalStamp.innerHTML = "";
             modalStamp.className = "modal-stamp hidden"; 
-            if (thumbnailStamp) thumbnailStamp.classList.add('hidden');
+            if (thumbnailContainer) thumbnailContainer.classList.remove('flipped');
             if (scannerOverlay) scannerOverlay.classList.remove('hidden');
         };
         reader.readAsDataURL(file);
@@ -193,7 +195,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Update Output Node
         nodeOutput.classList.remove('hidden');
-        if (thumbnailStamp) thumbnailStamp.classList.remove('hidden');
         if (scannerOverlay) scannerOverlay.classList.add('hidden');
         modalStamp.classList.remove('hidden');
 
@@ -202,20 +203,24 @@ document.addEventListener('DOMContentLoaded', () => {
             outputTitle.innerText = "LIKELY AI";
             modalStamp.innerHTML = iconAI;
             modalStamp.className = "modal-stamp";
-            if (thumbnailStamp) {
-                thumbnailStamp.innerHTML = iconAI;
-                thumbnailStamp.className = "thumbnail-stamp";
+            if (thumbnailBack) {
+                thumbnailBackText.innerText = "LIKELY\nAI";
+                thumbnailBack.className = "thumbnail-back";
             }
         } else {
             nodeOutput.classList.add('real-result');
             outputTitle.innerText = "REAL IMAGE";
             modalStamp.innerHTML = iconReal;
             modalStamp.className = "modal-stamp real-result";
-            if (thumbnailStamp) {
-                thumbnailStamp.innerHTML = iconReal;
-                thumbnailStamp.className = "thumbnail-stamp real-result";
+            if (thumbnailBack) {
+                thumbnailBackText.innerText = "REAL\nIMAGE";
+                thumbnailBack.className = "thumbnail-back real-result";
             }
         }
+        
+        // Trigger 3D Flip Card!
+        if (thumbnailContainer) thumbnailContainer.classList.add('flipped');
+        
         outputScore.innerText = conf.toFixed(0) + '%';
     }
 });

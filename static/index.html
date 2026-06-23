@@ -50,12 +50,18 @@
                         <img id="bg-preview-img" src="" alt="blur background">
                     </div>
                     
-                    <div class="uploaded-image-thumbnail">
-                        <img id="thumbnail-preview" src="" alt="thumbnail">
-                        <div class="scanner-overlay hidden" id="scanner-overlay">
-                            <div class="scanner-line"></div>
+                    <div class="uploaded-image-thumbnail" id="thumbnail-container">
+                        <div class="thumbnail-inner">
+                            <div class="thumbnail-front">
+                                <img id="thumbnail-preview" src="" alt="thumbnail">
+                                <div class="scanner-overlay hidden" id="scanner-overlay">
+                                    <div class="scanner-line"></div>
+                                </div>
+                            </div>
+                            <div class="thumbnail-back" id="thumbnail-back">
+                                <span id="thumbnail-back-text">LIKELY AI</span>
+                            </div>
                         </div>
-                        <div class="thumbnail-stamp hidden" id="thumbnail-stamp"></div>
                     </div>
                     
                     <button id="upload-another-btn" class="btn upload-another-btn">
