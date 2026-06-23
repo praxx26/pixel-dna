@@ -31,6 +31,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const thumbnailStamp = document.getElementById('thumbnail-stamp');
     const scannerOverlay = document.getElementById('scanner-overlay');
     
+    // SVG Icons for Stamps
+    const iconAI = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>`;
+    const iconReal = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>`;
+    
     // Set current date
     const date = new Date();
     currentDateStr.innerText = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase();
@@ -118,8 +122,9 @@ document.addEventListener('DOMContentLoaded', () => {
             bgPreviewImg.src = e.target.result;
             thumbnailPreview.src = e.target.result;
             modalImg.src = e.target.result;
-            modalStamp.innerText = "ANALYZING...";
-            modalStamp.className = "modal-stamp"; 
+            // Clear stamp during analysis
+            modalStamp.innerHTML = "";
+            modalStamp.className = "modal-stamp hidden"; 
             if (thumbnailStamp) thumbnailStamp.classList.add('hidden');
             if (scannerOverlay) scannerOverlay.classList.remove('hidden');
         };
@@ -190,23 +195,24 @@ document.addEventListener('DOMContentLoaded', () => {
         nodeOutput.classList.remove('hidden');
         if (thumbnailStamp) thumbnailStamp.classList.remove('hidden');
         if (scannerOverlay) scannerOverlay.classList.add('hidden');
+        modalStamp.classList.remove('hidden');
 
         if (isAi) {
             nodeOutput.classList.add('ai-result');
             outputTitle.innerText = "LIKELY AI";
-            modalStamp.innerText = "LIKELY AI";
+            modalStamp.innerHTML = iconAI;
             modalStamp.className = "modal-stamp";
             if (thumbnailStamp) {
-                thumbnailStamp.innerText = "LIKELY AI";
+                thumbnailStamp.innerHTML = iconAI;
                 thumbnailStamp.className = "thumbnail-stamp";
             }
         } else {
             nodeOutput.classList.add('real-result');
             outputTitle.innerText = "REAL IMAGE";
-            modalStamp.innerText = "REAL IMAGE";
+            modalStamp.innerHTML = iconReal;
             modalStamp.className = "modal-stamp real-result";
             if (thumbnailStamp) {
-                thumbnailStamp.innerText = "REAL IMAGE";
+                thumbnailStamp.innerHTML = iconReal;
                 thumbnailStamp.className = "thumbnail-stamp real-result";
             }
         }

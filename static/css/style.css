@@ -237,29 +237,52 @@ body {
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.thumbnail-stamp {
+.modal-stamp, .thumbnail-stamp {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) rotate(-15deg);
-    font-size: 1.2rem;
-    font-weight: 900;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(8px);
+    border: 4px solid var(--accent-red);
     color: var(--accent-red);
-    text-shadow: 0 2px 5px rgba(0,0,0,0.8);
-    border: 3px solid var(--accent-red);
-    padding: 0.3rem 0.6rem;
-    border-radius: 6px;
-    background: rgba(0,0,0,0.4);
-    backdrop-filter: blur(2px);
-    pointer-events: none;
-    text-align: center;
-    white-space: nowrap;
+    box-shadow: 0 0 30px var(--accent-red-glow);
     z-index: 15;
+    pointer-events: none;
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
-.thumbnail-stamp.real-result {
+@keyframes popIn {
+    0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+.modal-stamp {
+    width: 120px;
+    height: 120px;
+}
+.modal-stamp svg {
+    width: 60px;
+    height: 60px;
+}
+
+.thumbnail-stamp {
+    width: 60px;
+    height: 60px;
+}
+.thumbnail-stamp svg {
+    width: 30px;
+    height: 30px;
+}
+
+.thumbnail-stamp.real-result, .modal-stamp.real-result {
     color: var(--accent-green);
     border-color: var(--accent-green);
+    box-shadow: 0 0 30px rgba(16,185,129,0.5);
 }
 
 /* Scanner Animation */
@@ -541,31 +564,7 @@ body {
     display: block;
 }
 
-.modal-stamp {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(-15deg);
-    font-size: 4rem;
-    font-weight: 900;
-    color: var(--accent-red);
-    text-shadow: 0 4px 15px rgba(0,0,0,0.8), 0 0 30px var(--accent-red-glow);
-    border: 6px solid var(--accent-red);
-    padding: 1rem 2rem;
-    border-radius: 12px;
-    background: rgba(0,0,0,0.4);
-    backdrop-filter: blur(4px);
-    pointer-events: none;
-    text-align: center;
-    text-transform: uppercase;
-    white-space: nowrap;
-}
 
-.modal-stamp.real-result {
-    color: var(--accent-green);
-    border-color: var(--accent-green);
-    text-shadow: 0 4px 15px rgba(0,0,0,0.8), 0 0 30px rgba(16,185,129,0.5);
-}
 
 .hidden {
     display: none !important;
